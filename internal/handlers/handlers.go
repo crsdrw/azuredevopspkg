@@ -10,7 +10,7 @@ import (
 var errIncompletePath = errors.New("incomplete path")
 
 type parts struct {
-	org, proj, repo, subs string
+	org, proj, repo string
 }
 
 func extractRepoPath(path string) (parts, error) {
@@ -18,15 +18,11 @@ func extractRepoPath(path string) (parts, error) {
 	if len(p) < 3 {
 		return parts{}, errIncompletePath
 	}
-	ps := parts{
+	return parts{
 		org:  p[0],
 		proj: p[1],
 		repo: p[2],
-	}
-	if len(p) > 3 {
-		ps.subs = p[3]
-	}
-	return ps, nil
+	}, nil
 }
 
 var tmpl = template.Must(template.New("vanity").Parse(`<!DOCTYPE html>
@@ -38,7 +34,7 @@ var tmpl = template.Must(template.New("vanity").Parse(`<!DOCTYPE html>
     <title>Vanity URL for Go package hosted on Azure DevOps git repository</title>
   </head>
   <body>
-    Please <a href="https://dev.azure.com/{{.Org}}/{{.Proj}}/_git/{{.Repo}}"> the package on Azure DevOps</a>.
+    Please see <a href="https://dev.azure.com/{{.Org}}/{{.Proj}}/_git/{{.Repo}}"> the package on Azure DevOps</a>.
   </body>
 </html>
 `))
