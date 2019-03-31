@@ -45,7 +45,8 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	w.Header().Set("Cache-Control", "public, max-age=86400") // Cache for 24 hours.
+	w.Header().Set("Cache-Control", "public, max-age=86400")                                    // Cache for 24 hours.
+	w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload") // Set HSTS header
 	err = tmpl.Execute(w, struct {
 		Host string
 		Org  string
